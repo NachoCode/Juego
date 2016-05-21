@@ -9,10 +9,10 @@ public class Enemigos extends JLabel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String RUTA = "src/img/point.png";
+	private String RUTA = "src/img/point1.png";
 	private int index;
 	private ImageIcon imageIcon;
-	private static final int posy = 365;
+	private static final int posy = 450;
 	private int posx = 0;
 	private boolean colision = false;
 	private static int SEPARACION;
@@ -36,13 +36,20 @@ public class Enemigos extends JLabel {
 
 	public void moverEnemigo() {
 		posx -= 10;
-		if (posx == 40) {
-			System.out.println("HOLA");
-			this.colision = true;
-		}
-
 		this.setBounds(posx, posy, imageIcon.getIconWidth(),
 				imageIcon.getIconHeight());
+	}
+
+	public void animar() {
+		index++;
+		imageIcon = new ImageIcon("src/img/point" + index + ".png");
+		this.setIcon(imageIcon);
+		this.setBounds(posx, posy, imageIcon.getIconWidth(),
+				imageIcon.getIconHeight());
+		if (index == 9) {
+			index = 1;
+		}
+
 	}
 
 	public int getSeparacion() {

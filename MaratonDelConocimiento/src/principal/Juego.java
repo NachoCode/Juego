@@ -28,6 +28,7 @@ public class Juego implements Runnable {
 						System.out.println("Resume");
 					} else {
 						actulizar();
+						animacionesDeObjetos();
 					}
 				}
 				// System.out.println("FUNCIONANDO");
@@ -79,6 +80,10 @@ public class Juego implements Runnable {
 			ventanaJuego.getPersonaje().reposo();
 		}
 
+	}
+
+	private synchronized void animacionesDeObjetos() {
+		ventanaJuego.animarEnemigos();
 	}
 
 	public void crearVentanaJuego() {

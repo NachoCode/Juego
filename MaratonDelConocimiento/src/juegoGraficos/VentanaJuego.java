@@ -22,7 +22,7 @@ public class VentanaJuego extends JFrame {
 	private Personaje personaje;
 	private Enemigos[] enemigos;
 	private DialogPreguntas dialogPreguntas;
-	private final static int CANT_ENEMIGOS = 4;
+	private final static int CANT_ENEMIGOS = 10;
 	private Preguntas preguntas;
 	private ArrayList<Integer> lista;
 	private Random random = new Random(System.nanoTime());
@@ -94,6 +94,12 @@ public class VentanaJuego extends JFrame {
 	public void moverEnemigos() {
 		for (int i = 0; i < enemigos.length; i++) {
 			this.getEnemigos(i).moverEnemigo();
+		}
+	}
+
+	public void animarEnemigos() {
+		for (int i = 0; i < enemigos.length; i++) {
+			this.getEnemigos(i).animar();
 		}
 	}
 
