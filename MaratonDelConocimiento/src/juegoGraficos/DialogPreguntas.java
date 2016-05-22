@@ -1,6 +1,5 @@
 package juegoGraficos;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridLayout;
 
@@ -17,15 +16,15 @@ public class DialogPreguntas extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Container c;
-	private JPanel panel;
+	private JPanel panel, panelPregunta;
 	private JRadioButton[] radioButton;
 	private ButtonGroup buttonGroup;
-	private JLabel label;
+	private JLabel labelPregunta;
 
 	public DialogPreguntas() {
 		this.setTitle("Pregunta");
 		this.setModal(true);
-		this.setSize(400, 200);
+		this.setSize(600, 200);
 		this.setLocationRelativeTo(null);
 		// this.setUndecorated(true);
 		iniciarComponentes();
@@ -34,19 +33,28 @@ public class DialogPreguntas extends JDialog {
 	}
 
 	private void iniciarComponentes() {
+
 		c = getContentPane();
-		panel = new JPanel(new GridLayout(1, 3));
-		panel.setBackground(Color.BLACK);
+		c.setLayout(new GridLayout(2, 1));
+
+		panelPregunta = new JPanel(new GridLayout(1, 1));
+		panel = new JPanel(new GridLayout(3, 1));
 
 		buttonGroup = new ButtonGroup();
 		radioButton = new JRadioButton[3];
 
-		label = new JLabel("");
+		labelPregunta = new JLabel("");
 
 		for (int i = 0; i < radioButton.length; i++) {
-			radioButton[i] = new JRadioButton(i + "BOTONES");
+			String[] letra = { "A)", "B)", "C)" };
+			radioButton[i] = new JRadioButton(letra[i]);
 			buttonGroup.add(radioButton[i]);
 		}
+
+	}
+
+	public void armarPregunta(String pregunta, int numeroPregunta) {
+		labelPregunta.setText(numeroPregunta + ".- " + pregunta);
 
 	}
 
@@ -54,6 +62,8 @@ public class DialogPreguntas extends JDialog {
 		for (int i = 0; i < radioButton.length; i++) {
 			panel.add(radioButton[i]);
 		}
+		panelPregunta.add(labelPregunta);
+		c.add(panelPregunta);
 		c.add(panel);
 	}
 

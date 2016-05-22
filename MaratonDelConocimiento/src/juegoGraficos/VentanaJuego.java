@@ -1,11 +1,13 @@
 package juegoGraficos;
 
 import java.awt.Container;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import preguntas.Preguntas;
@@ -23,41 +25,68 @@ public class VentanaJuego extends JFrame {
 	private Enemigos[] enemigos;
 	private DialogPreguntas dialogPreguntas;
 	private final static int CANT_ENEMIGOS = 10;
+	private final static int CANT_CORREGIR_DIST = 0;
+
+	// Menu
+	private JMenuBar menuBar;
+	private JMenu menu;
+	private JMenuItem[] items;
+
+	// Preguntas
+	private ArrayList<Integer> listaNumeros;
 	private Preguntas preguntas;
-	private ArrayList<Integer> lista;
-	private Random random = new Random(System.nanoTime());
+	private Random rand = new Random(System.nanoTime());
 
 	public VentanaJuego(Teclado teclado) {
+
+		iniciarComponentes();
+		añadirComponentes();
 		this.setTitle("Maraton");
 		this.setSize(ANCHO, ALTO);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.addKeyListener(teclado);
-
-		iniciarComponentes();
-		añadirComponentes();
-		this.crearFichero();
+		this.setJMenuBar(menuBar);
 
 	}
 
 	private void iniciarComponentes() {
+
+		// MENU
+		menuBar = new JMenuBar();
+		menu = new JMenu("Opciones");
+		menuBar.add(menu);
+
+		items = new JMenuItem[2];
+		items[0] = new JMenuItem("Inicio");
+		items[1] = new JMenuItem("Salir");
+		menu.add(items[0]);
+		menu.addSeparator();
+		menu.add(items[1]);
+
+		// Grafico
+
 		c = getContentPane();
 		panel = new JPanel(null);
 		panel.setBounds(0, 0, 1250, 600);
 		mapa = new Mapa();
 		personaje = new Personaje();
 		enemigos = new Enemigos[CANT_ENEMIGOS];
-		dialogPreguntas = new DialogPreguntas();
+
+		// Preguntas
 		preguntas = new Preguntas();
-		preguntas.hacerNumerosAleatorios();
-		lista = preguntas.getLista();
+		listaNumeros = preguntas.hacerNumerosAleatorios();
+		preguntas.crearFichero();
+		preguntas.obtenerPreguntas();
+		preguntas.escribirFichero();
+		dialogPreguntas = new DialogPreguntas();
 
 	}
 
 	private void añadirComponentes() {
-		panel.add(personaje);
 		crearEnemigos();
+		panel.add(personaje);
 		panel.add(mapa);
 		c.add(panel);
 
@@ -76,13 +105,13 @@ public class VentanaJuego extends JFrame {
 	}
 
 	public void crearEnemigos() {
-		int separacionAprox = 3600 / CANT_ENEMIGOS;
-		System.out.println(separacionAprox);
+		int separacionAprox = (3600 / CANT_ENEMIGOS) + CANT_CORREGIR_DIST;
+		personaje.setDistanciaParaColisionar(separacionAprox);
 
 		int separacion = 0;
 		for (int i = 0; i < enemigos.length; i++) {
-			enemigos[i] = new Enemigos(separacionAprox);
-			separacion += enemigos[i].getSeparacion();
+			enemigos[i] = new Enemigos((i + 1));
+			separacion += separacionAprox;
 			enemigos[i].crearEnimigo(separacion);
 
 			System.out
@@ -99,32 +128,32 @@ public class VentanaJuego extends JFrame {
 
 	public void animarEnemigos() {
 		for (int i = 0; i < enemigos.length; i++) {
-			this.getEnemigos(i).animar();
+			this.enemigos[i].animar();
 		}
 	}
 
-	public boolean verificarColision() {
+	public void verificarColision() {
+		if (personaje.colisionar()) {
+			armarDialog();
+			dialogPreguntas.setVisible(true);
+		}
 
-		for (int i = 0; i < enemigos.length; i++) {
+	}
+
+	private void armarDialog() {
+		int numeroAleatorio = rand.nextInt(10);
+		int aux = 0;
+		for (int i = 0; i < enemigos.length && aux == 0; i++) {
 			if (enemigos[i].getColision()) {
+				aux = 1;
 				enemigos[i].setColision(false);
-				dialogPreguntas.setVisible(true);
-				return true;
+				System.out.println("Numero de pregunta: "
+						+ enemigos[i].getNumeroPregunta()
+						+ "\nNumero Aleatorio: " + numeroAleatorio);
+				dialogPreguntas.armarPregunta(
+						preguntas.leerFichero(numeroAleatorio),
+						enemigos[i].getNumeroPregunta());
 			}
-
-		}
-		return false;
-	}
-
-	public void crearFichero() {
-		try {
-			preguntas.crearFichero();
-			// preguntas.escribirFichero();
-			preguntas.leerFichero(0);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
-
 }

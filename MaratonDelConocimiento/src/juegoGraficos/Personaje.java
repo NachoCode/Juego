@@ -14,7 +14,9 @@ public class Personaje extends JLabel {
 	private ImageIcon imageIcon;
 	private int index;
 	private final int POSY = 430;
-	private int POSX = 40;
+	private int POSX = 0;
+	private static int separacion = 0;
+	private int dist_colision = 0;
 
 	public Personaje() {
 		this.setText("");
@@ -43,4 +45,20 @@ public class Personaje extends JLabel {
 				imageIcon.getIconHeight());
 	}
 
+	public boolean colisionar() {
+		dist_colision -= 10;
+		// System.out.println(dist_colision);
+		if (dist_colision == 0) {
+			dist_colision = separacion;
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	public void setDistanciaParaColisionar(int separacion) {
+		Personaje.separacion = separacion;
+		this.dist_colision = separacion;
+	}
 }

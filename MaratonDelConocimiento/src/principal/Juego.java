@@ -74,8 +74,8 @@ public class Juego implements Runnable {
 			ventanaJuego.getMapa().mover();
 			ventanaJuego.getPersonaje().animar();
 			ventanaJuego.moverEnemigos();
-			System.out.println(ventanaJuego.getEnemigos(1).getX());
 			ventanaJuego.verificarColision();
+
 		} else {
 			ventanaJuego.getPersonaje().reposo();
 		}
