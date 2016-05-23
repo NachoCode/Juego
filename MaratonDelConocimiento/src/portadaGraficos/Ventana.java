@@ -46,7 +46,6 @@ public class Ventana extends JFrame {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setJMenuBar(menuBar);
-		this.setVisible(true);
 
 	}
 

@@ -1,74 +1,76 @@
 package principal;
 
+import javax.swing.JOptionPane;
+
 import juegoGraficos.Teclado;
 import juegoGraficos.VentanaJuego;
+import portadaGraficos.Ventana;
 
 public class Juego implements Runnable {
 	private Thread hilo;
-	private volatile boolean enJuego, enPausa;
+	// private volatile boolean enJuego, enPausa;
 	private static VentanaJuego ventanaJuego;
 	private Teclado teclado;
-	private volatile int pregunta = 0;
+	private static int turnos, preguntasIncorrectas;
+	private long tiempoInicial, tiempoFinal;
+	private final static int velocidadDeJuego = 10;
+	private Ventana ventana;
 
 	public Juego() {
-		enJuego = true;
-		enPausa = false;
+		turnos = 0;
+		preguntasIncorrectas = 0;
+		tiempoInicial = 0;
+		tiempoFinal = 0;
 		hilo = new Thread(this);
 		teclado = new Teclado();
 	}
 
 	@Override
 	public void run() {
-		while (enJuego) {
+		while (turnos < ventanaJuego.getTurnos()) {
 			try {
 				synchronized (this) {
-					if (enPausa) {
-						System.out.println("En pausa");
-						wait(3000);
-						continuar();
-						System.out.println("Resume");
-					} else {
+					actulizar();
+					animacionesDeObjetos();
 
-						actulizar();
-
-						animacionesDeObjetos();
-						// moverIgnorancia();
-					}
 				}
 				// System.out.println("FUNCIONANDO");
 
-				Thread.sleep(50);
+				Thread.sleep(velocidadDeJuego);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
+		tiempoFinal = System.nanoTime();
+		String texto = "Gracias por jugar!!" + "\nTiempo de maraton: "
+				+ (tiempoFinal - tiempoInicial) / 1000000000
+				+ "\nRespuestas correctas: XX" + "\nRespuestas Incorrectas: XX";
+
+		String[] opciones = { "Inicio", "Reintentar", "Salir" };
+
+		int op = JOptionPane.showOptionDialog(null, texto, "Poup",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+				opciones, opciones[0]);
+
+		redireccionar(op);
 
 	}
 
 	public void empezar() {
+		tiempoInicial = System.nanoTime();
 		hilo.start();
 	}
 
 	private synchronized void salir() {
 
 		try {
-			enJuego = false;
 			hilo.join();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	private synchronized void pausar() {
-		enPausa = true;
-	}
-
-	private synchronized void continuar() {
-		enPausa = false;
-
 	}
 
 	private synchronized void actulizar() throws InterruptedException {
@@ -78,8 +80,12 @@ public class Juego implements Runnable {
 			ventanaJuego.getPersonaje().animar();
 			ventanaJuego.moverEnemigos();
 			if (ventanaJuego.verificarColision()) {
-				if (ventanaJuego.getdialogo().verificar_respuesta()) {
-
+				turnos++;
+				if (!ventanaJuego.getdialogo().verificar_respuesta()) {
+					preguntasIncorrectas++;
+					int aumentar = ventanaJuego.getPersonaje().getDistancia();
+					ventanaJuego.getBarraDeIgnorancia().aumentarIgnorancia(
+							aumentar * preguntasIncorrectas);
 				}
 			}
 
@@ -98,6 +104,38 @@ public class Juego implements Runnable {
 		ventanaJuego = new VentanaJuego(this.teclado);
 		ventanaJuego.setVisible(true);
 
+	}
+
+	private void llamarPortada() {
+		ventana = new Ventana();
+		ventana.setVisible(true);
+	}
+
+	private void reintentar() {
+		ventanaJuego = new VentanaJuego(this.teclado);
+		ventanaJuego.setVisible(true);
+	}
+
+	private void redireccionar(int op) {
+		switch (op) {
+		case 0:
+			System.out.println("INICIO");
+			ventanaJuego.dispose();
+			llamarPortada();
+			this.salir();
+			break;
+		case 1: {
+			System.out.println("REINTENTAR");
+			ventanaJuego.dispose();
+			reintentar();
+			break;
+		}
+		case 2: {
+			System.out.println("SALIR");
+			ventanaJuego.dispose();
+			break;
+		}
+		}
 	}
 
 }

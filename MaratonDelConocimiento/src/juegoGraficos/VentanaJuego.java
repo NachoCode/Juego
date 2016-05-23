@@ -25,7 +25,7 @@ public class VentanaJuego extends JFrame {
 	private Personaje personaje;
 	// Enemigos
 	private Enemigos[] enemigos;
-	private final static int CANT_ENEMIGOS = 4;
+	private final static int CANT_ENEMIGOS = 2;
 
 	// Menu
 	private JMenuBar menuBar;
@@ -41,6 +41,8 @@ public class VentanaJuego extends JFrame {
 
 	// Aux
 	private Teclado teclado;
+	// Barra de ignorancia
+	private BarraDeIgnorancia barraDeIgnorancia;
 
 	public VentanaJuego(Teclado teclado) {
 		this.teclado = teclado;
@@ -78,7 +80,8 @@ public class VentanaJuego extends JFrame {
 		mapa = new Mapa();
 		// Instanciar Personaje
 		personaje = new Personaje();
-		// Instancia Ignorancia
+		// Barra de ignorancia
+		barraDeIgnorancia = new BarraDeIgnorancia(3600);
 
 		enemigos = new Enemigos[CANT_ENEMIGOS];
 
@@ -94,6 +97,7 @@ public class VentanaJuego extends JFrame {
 
 	private void añadirComponentes() {
 		crearEnemigos();
+		panel.add(barraDeIgnorancia);
 		panel.add(personaje);
 		panel.add(mapa);
 		c.add(panel);
@@ -116,6 +120,14 @@ public class VentanaJuego extends JFrame {
 		return this.dialogPreguntas;
 	}
 
+	public BarraDeIgnorancia getBarraDeIgnorancia() {
+		return this.barraDeIgnorancia;
+	}
+
+	public int getTurnos() {
+		return VentanaJuego.CANT_ENEMIGOS;
+	}
+
 	public void crearEnemigos() {
 		int separacionAprox = (3600 / CANT_ENEMIGOS);
 		personaje.setDistanciaParaColisionar(separacionAprox);
@@ -131,8 +143,6 @@ public class VentanaJuego extends JFrame {
 
 			enemigos[i].crearEnimigo(separacion);
 
-			// System.out
-			// .println("Enemigo " + (i + 1) + ": " + enemigos[i].getX());
 			panel.add(enemigos[i]);
 		}
 	}
@@ -164,12 +174,6 @@ public class VentanaJuego extends JFrame {
 			return false;
 		}
 
-	}
-
-	public void castigar() {
-		for (int i = 0; i < enemigos.length; i++) {
-			enemigos[i].castigo();
-		}
 	}
 
 	private void armarDialog() {
