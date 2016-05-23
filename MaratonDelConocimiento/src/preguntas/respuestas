@@ -1,0 +1,75 @@
+Es un concepto similar al de “array”
+Es un tipo particular de variable
+Es un modelo o plantilla a partir de la cuál creamos objetos
+Sus cardinalidad y su tipo
+Sus atributos y sus métodos
+La forma en que se establece comunicación
+Public class Componente extends producto
+Public class Componente inherit Producto
+Public class Componente implements Producto
+Duplicar una clase 
+Conectar dos clases entre si.
+Crear un objeto a partir de la clase.
+Una función utilizada para intercambiar valores
+Es el sobrenombre de la versión 1.3 del JDK
+Una librería para construir interfaces graficas
+Una librería de Java
+Un IDE para desarrollar aplicaciones
+Una versión de Java especial para servidores
+El formato de intercambio de datos 
+El formato que obtenemos tras compilar una fuente .java
+Un depurador de código
+Public class Componente Implement Printable
+Public class Componente Interface Product 
+Componente cp = new Componente.interfaz
+Editarlo para modificar su comportamiento 
+Cambiarle el nombre dejándolo con la misma funcionalidad
+Crear un método con el mismo nombre pero diferentes  argumentos
+Un error que lanza un método cuando algo va mal
+Un objeto que no puede ser instanciado 
+Un bucle que no finaliza
+int a =0;
+tipo lista_variables;
+b=0
+Ocurre al crear varios métodos en una clase
+Es la acción de crear clases derivadas de una clase b
+Ocurre al crear un método sin retorno
+Solo los métodos
+Solo las variables
+Metodos y variables(Depende la visibilidad)
+new
+abstract
+public
+En declarar metodos en una clase
+En crear clases y métodos en un programa
+En utilizar un mismo método para distintos objetos
+Es una clase que no puede ser instanciada
+Secuencia de caracteres delimitada entre dobles comillas
+Son caracteres sin dobles comillas
+Getchars
+LastIndexOf
+Length
+Java Virtual Machine: la máquina virtual Java que traduce el bytecode
+Java V Mobile: la versión 5 de Java para dispositivos móviles
+Java Virtual Memory: el gestor de memoria virtual de Java
+Comenzando la línea con "//"
+Encerrando la línea entre "<--" y "!-->"
+Encerrando la línea entre "/" y "/"
+Modos de compilar el código fuente de un programa de ordenador 
+Modos de definir el pseudocódigo de un programa de ordenador 
+Paradigmas de programación
+Empty or full 
+End of file 
+End of floop
+Funciones de acceso a datos 
+Sentencias de control 
+Tipos de datos
+Instrucciones de acceso a datos 
+Sentencias de control 
+Tipos de datos
+SI
+NO
+No lo se
+Es una variable que no se puede sincronizar,otros hilos la pueden ocupar
+Es una funcion
+Es un tipo de parametro para sumar.
