@@ -13,10 +13,11 @@ public class Personaje extends JLabel {
 	private static final String EXT = ".png";
 	private ImageIcon imageIcon;
 	private int index;
-	private final int POSY = 430;
+	private final int POSY = 410;
 	private int POSX = 0;
 	private static int separacion = 0;
 	private int dist_colision = 0;
+	private boolean res_correcta = false;
 
 	public Personaje() {
 		this.setText("");
@@ -57,8 +58,20 @@ public class Personaje extends JLabel {
 
 	}
 
+	public void setRes_Correcta(boolean resp) {
+		this.res_correcta = resp;
+	}
+
+	public boolean getRes_Correcta() {
+		return this.res_correcta;
+	}
+
 	public void setDistanciaParaColisionar(int separacion) {
 		Personaje.separacion = separacion;
 		this.dist_colision = separacion;
+	}
+
+	public int getDistancia() {
+		return Personaje.separacion;
 	}
 }

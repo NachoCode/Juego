@@ -21,11 +21,11 @@ public class VentanaJuego extends JFrame {
 	private Container c;
 	private JPanel panel;
 	private Mapa mapa;
+	// Personaje
 	private Personaje personaje;
+	// Enemigos
 	private Enemigos[] enemigos;
-	private DialogPreguntas dialogPreguntas;
-	private final static int CANT_ENEMIGOS = 10;
-	private final static int CANT_CORREGIR_DIST = 0;
+	private final static int CANT_ENEMIGOS = 4;
 
 	// Menu
 	private JMenuBar menuBar;
@@ -33,12 +33,17 @@ public class VentanaJuego extends JFrame {
 	private JMenuItem[] items;
 
 	// Preguntas
+	private DialogPreguntas dialogPreguntas;
+	private final int CANT_PREGUNTAS = 25;
 	private ArrayList<Integer> listaNumeros;
 	private Preguntas preguntas;
 	private Random rand = new Random(System.nanoTime());
 
-	public VentanaJuego(Teclado teclado) {
+	// Aux
+	private Teclado teclado;
 
+	public VentanaJuego(Teclado teclado) {
+		this.teclado = teclado;
 		iniciarComponentes();
 		añadirComponentes();
 		this.setTitle("Maraton");
@@ -71,16 +76,19 @@ public class VentanaJuego extends JFrame {
 		panel = new JPanel(null);
 		panel.setBounds(0, 0, 1250, 600);
 		mapa = new Mapa();
+		// Instanciar Personaje
 		personaje = new Personaje();
+		// Instancia Ignorancia
+
 		enemigos = new Enemigos[CANT_ENEMIGOS];
 
 		// Preguntas
 		preguntas = new Preguntas();
 		listaNumeros = preguntas.hacerNumerosAleatorios();
-		preguntas.crearFichero();
+		// preguntas.crearFichero();
 		preguntas.obtenerPreguntas();
-		preguntas.escribirFichero();
-		dialogPreguntas = new DialogPreguntas();
+		// preguntas.escribirFichero();
+		dialogPreguntas = new DialogPreguntas(teclado);
 
 	}
 
@@ -104,18 +112,27 @@ public class VentanaJuego extends JFrame {
 		return this.enemigos[i];
 	}
 
+	public DialogPreguntas getdialogo() {
+		return this.dialogPreguntas;
+	}
+
 	public void crearEnemigos() {
-		int separacionAprox = (3600 / CANT_ENEMIGOS) + CANT_CORREGIR_DIST;
+		int separacionAprox = (3600 / CANT_ENEMIGOS);
 		personaje.setDistanciaParaColisionar(separacionAprox);
 
 		int separacion = 0;
 		for (int i = 0; i < enemigos.length; i++) {
-			enemigos[i] = new Enemigos((i + 1));
+
+			// Separacion
 			separacion += separacionAprox;
+
+			// Enemigos personaje
+			enemigos[i] = new Enemigos((i + 1));
+
 			enemigos[i].crearEnimigo(separacion);
 
-			System.out
-					.println("Enemigo " + (i + 1) + ": " + enemigos[i].getX());
+			// System.out
+			// .println("Enemigo " + (i + 1) + ": " + enemigos[i].getX());
 			panel.add(enemigos[i]);
 		}
 	}
@@ -126,33 +143,60 @@ public class VentanaJuego extends JFrame {
 		}
 	}
 
+	public void moverEnemigosIgnorancia() {
+		for (int i = 0; i < enemigos.length; i++) {
+
+		}
+	}
+
 	public void animarEnemigos() {
 		for (int i = 0; i < enemigos.length; i++) {
 			this.enemigos[i].animar();
 		}
 	}
 
-	public void verificarColision() {
+	public boolean verificarColision() {
 		if (personaje.colisionar()) {
 			armarDialog();
 			dialogPreguntas.setVisible(true);
+			return true;
+		} else {
+			return false;
 		}
 
 	}
 
+	public void castigar() {
+		for (int i = 0; i < enemigos.length; i++) {
+			enemigos[i].castigo();
+		}
+	}
+
 	private void armarDialog() {
-		int numeroAleatorio = rand.nextInt(10);
+		int random = rand.nextInt(CANT_PREGUNTAS);
+		System.out.println("Random: " + random);
+		int numeroAleatorio = listaNumeros.get(random);
+		System.out.println("Aletorio: " + numeroAleatorio);
+
 		int aux = 0;
+		ArrayList<String> tempOpciones = preguntas
+				.ExtraerOpciones(numeroAleatorio);
+
+		dialogPreguntas.setPreguntaAContestar(numeroAleatorio);
+
 		for (int i = 0; i < enemigos.length && aux == 0; i++) {
 			if (enemigos[i].getColision()) {
-				aux = 1;
+
 				enemigos[i].setColision(false);
-				System.out.println("Numero de pregunta: "
-						+ enemigos[i].getNumeroPregunta()
-						+ "\nNumero Aleatorio: " + numeroAleatorio);
+
 				dialogPreguntas.armarPregunta(
-						preguntas.leerFichero(numeroAleatorio),
+						preguntas.ExtraerPregunta(numeroAleatorio),
 						enemigos[i].getNumeroPregunta());
+
+				dialogPreguntas.armarOpciones(tempOpciones);
+
+				aux = 1;
+
 			}
 		}
 	}

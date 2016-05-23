@@ -2,10 +2,14 @@ package juegoGraficos;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -20,15 +24,25 @@ public class DialogPreguntas extends JDialog {
 	private JRadioButton[] radioButton;
 	private ButtonGroup buttonGroup;
 	private JLabel labelPregunta;
+	private String[] respuestas = { "A", "A", "B", "C", "A", "A", "B", "B",
+			"C", "A", "C", "C", "B", "A", "B", "B", "B", "A", "C", "C", "A",
+			"B", "A", "A", "C" };
 
-	public DialogPreguntas() {
+	private int num_pregunta = 0;
+	private boolean resultado_pregunta = false;
+	private Teclado teclado;
+
+	public DialogPreguntas(Teclado teclado) {
 		this.setTitle("Pregunta");
 		this.setModal(true);
 		this.setSize(600, 200);
+		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		// this.setUndecorated(true);
+		this.teclado = teclado;
 		iniciarComponentes();
 		añadirComponentes();
+		accionesComponentes();
 
 	}
 
@@ -55,7 +69,18 @@ public class DialogPreguntas extends JDialog {
 
 	public void armarPregunta(String pregunta, int numeroPregunta) {
 		labelPregunta.setText(numeroPregunta + ".- " + pregunta);
+	}
 
+	public void armarOpciones(ArrayList<String> listOp) {
+		String[] letras = { "A", "B", "C" };
+		for (int i = 0; i < radioButton.length; i++) {
+			radioButton[i].setName(letras[i]);
+			radioButton[i].setText(letras[i] + ") " + listOp.get(i));
+		}
+	}
+
+	public void setPreguntaAContestar(int num_pregunta) {
+		this.num_pregunta = num_pregunta;
 	}
 
 	private void añadirComponentes() {
@@ -67,4 +92,65 @@ public class DialogPreguntas extends JDialog {
 		c.add(panel);
 	}
 
+	public boolean verificar_respuesta() {
+		return this.resultado_pregunta;
+	}
+
+	public void poner_falso(boolean res) {
+		this.resultado_pregunta = res;
+	}
+
+	private void accionesComponentes() {
+		radioButton[0].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (radioButton[0].getName().equals(respuestas[num_pregunta])) {
+					resultado_pregunta = true;
+					teclado.setDerecha(false);
+					JOptionPane.showMessageDialog(null, "CORRECTO");
+					dispose();
+
+				} else {
+					teclado.setDerecha(false);
+					resultado_pregunta = false;
+					dispose();
+					JOptionPane.showMessageDialog(null, "INCORRECTO");
+				}
+
+			}
+		});
+		radioButton[1].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (radioButton[1].getName().equals(respuestas[num_pregunta])) {
+					resultado_pregunta = true;
+					teclado.setDerecha(false);
+					JOptionPane.showMessageDialog(null, "CORRECTO");
+					dispose();
+				} else {
+					teclado.setDerecha(false);
+					resultado_pregunta = false;
+					JOptionPane.showMessageDialog(null, "INCORRECTO");
+					dispose();
+				}
+
+			}
+		});
+
+		radioButton[2].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (radioButton[2].getName().equals(respuestas[num_pregunta])) {
+					resultado_pregunta = true;
+					teclado.setDerecha(false);
+					JOptionPane.showMessageDialog(null, "CORRECTO");
+					dispose();
+				} else {
+					teclado.setDerecha(false);
+					resultado_pregunta = false;
+					JOptionPane.showMessageDialog(null, "INCORRECTO");
+					dispose();
+				}
+
+			}
+		});
+
+	}
 }

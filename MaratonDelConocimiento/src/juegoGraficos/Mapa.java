@@ -5,6 +5,10 @@ import javax.swing.JLabel;
 
 public class Mapa extends JLabel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final String RUTA = "src/img/mapa.gif";
 	private static final int ANCHO = 5000, ALTO = 600;
 	private int x;
@@ -21,4 +25,10 @@ public class Mapa extends JLabel {
 		x -= 10;
 		this.setBounds(x, 0, ANCHO, ALTO);
 	}
+
+	public void castigo() {
+		x += 50;
+		this.setBounds(x, 0, ANCHO, ALTO);
+	}
+
 }

@@ -60,6 +60,12 @@ public class Enemigos extends JLabel {
 
 	}
 
+	public void castigo() {
+		posx += 30;
+		this.setBounds(posx, posy, imageIcon.getIconWidth(),
+				imageIcon.getIconHeight());
+	}
+
 	public boolean getColision() {
 		return this.colision;
 	}

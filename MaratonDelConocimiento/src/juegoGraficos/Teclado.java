@@ -4,30 +4,36 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Teclado implements KeyListener {
-	private static final int NUM_TECLAS = 120;
-	private boolean[] teclas = new boolean[NUM_TECLAS];
-	public boolean derecha, izquierda;
-
-	public void actualizar() {
-		derecha = teclas[KeyEvent.VK_RIGHT];
-		izquierda = teclas[KeyEvent.VK_LEFT];
-	}
+	public boolean derecha;
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		teclas[e.getKeyCode()] = true;
+		if (e.getKeyCode() == 39) {
+			derecha = true;
+
+		} else {
+			derecha = false;
+		}
 
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		teclas[e.getKeyCode()] = false;
+		derecha = false;
 
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 
+	}
+
+	public boolean getDerecha() {
+		return this.derecha;
+	}
+
+	public void setDerecha(boolean derecha) {
+		this.derecha = derecha;
 	}
 
 }

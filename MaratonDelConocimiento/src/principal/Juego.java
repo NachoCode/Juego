@@ -8,6 +8,7 @@ public class Juego implements Runnable {
 	private volatile boolean enJuego, enPausa;
 	private static VentanaJuego ventanaJuego;
 	private Teclado teclado;
+	private volatile int pregunta = 0;
 
 	public Juego() {
 		enJuego = true;
@@ -27,13 +28,16 @@ public class Juego implements Runnable {
 						continuar();
 						System.out.println("Resume");
 					} else {
+
 						actulizar();
+
 						animacionesDeObjetos();
+						// moverIgnorancia();
 					}
 				}
 				// System.out.println("FUNCIONANDO");
 
-				Thread.sleep(40);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -67,17 +71,21 @@ public class Juego implements Runnable {
 
 	}
 
-	private synchronized void actulizar() {
-		teclado.actualizar();
+	private synchronized void actulizar() throws InterruptedException {
 
-		if (teclado.derecha) {
+		if (teclado.getDerecha()) {
 			ventanaJuego.getMapa().mover();
 			ventanaJuego.getPersonaje().animar();
 			ventanaJuego.moverEnemigos();
-			ventanaJuego.verificarColision();
+			if (ventanaJuego.verificarColision()) {
+				if (ventanaJuego.getdialogo().verificar_respuesta()) {
+
+				}
+			}
 
 		} else {
 			ventanaJuego.getPersonaje().reposo();
+			teclado.setDerecha(false);
 		}
 
 	}
