@@ -11,7 +11,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import preguntas.Preguntas;
-import principal.Juego;
 
 public class VentanaJuego extends JFrame {
 	/**
@@ -26,7 +25,8 @@ public class VentanaJuego extends JFrame {
 	private Personaje personaje;
 	// Enemigos
 	private Enemigos[] enemigos;
-	private final static int CANT_ENEMIGOS = 2;
+	// CAMBIAR ESTA VARIABLE
+	private final static int CANT_ENEMIGOS = 6;
 
 	// Menu
 	private JMenuBar menuBar;
@@ -35,7 +35,7 @@ public class VentanaJuego extends JFrame {
 
 	// Preguntas
 	private DialogPreguntas dialogPreguntas;
-	private final int CANT_PREGUNTAS = 25;
+	private static int CANT_PREGUNTAS;
 	private ArrayList<Integer> listaNumeros;
 	private Preguntas preguntas;
 	private Random rand = new Random(System.nanoTime());
@@ -46,6 +46,9 @@ public class VentanaJuego extends JFrame {
 	private BarraDeIgnorancia barraDeIgnorancia;
 
 	public VentanaJuego(Teclado teclado) {
+		// Variables
+		CANT_PREGUNTAS = 25;
+
 		this.teclado = teclado;
 		iniciarComponentes();
 		añadirComponentes();
@@ -179,9 +182,14 @@ public class VentanaJuego extends JFrame {
 
 	private void armarDialog() {
 		int random = rand.nextInt(CANT_PREGUNTAS);
-		System.out.println("Random: " + random);
 		int numeroAleatorio = listaNumeros.get(random);
-		System.out.println("Aletorio: " + numeroAleatorio);
+		listaNumeros.remove(random);
+		CANT_PREGUNTAS--;
+		for (int i = 0; i < listaNumeros.size(); i++) {
+			System.out.println("index " + i + ": " + listaNumeros.get(i));
+		}
+
+		System.out.println("Numero eliminado: " + numeroAleatorio);
 
 		int aux = 0;
 		ArrayList<String> tempOpciones = preguntas
@@ -206,8 +214,4 @@ public class VentanaJuego extends JFrame {
 		}
 	}
 
-	public void reintentar() {
-		Juego juego = new Juego();
-		juego.empezar();
-	}
 }

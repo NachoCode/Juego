@@ -26,7 +26,7 @@ public class DialogPreguntas extends JDialog {
 	private JLabel labelPregunta;
 	private String[] respuestas = { "A", "A", "B", "C", "A", "A", "B", "B",
 			"C", "A", "C", "C", "B", "A", "B", "B", "B", "A", "C", "C", "A",
-			"B", "A", "A", "C" };
+			"B", "B", "A", "C", "C" };
 
 	private int num_pregunta = 0;
 	private boolean resultado_pregunta = false;

@@ -15,12 +15,14 @@ public class Juego implements Runnable {
 	private long tiempoInicial, tiempoFinal;
 	private final static int velocidadDeJuego = 50;
 	private Ventana ventana;
+	private static String nombre;
 
-	public Juego() {
+	public Juego(String nombre) {
 		turnos = 0;
 		preguntasIncorrectas = 0;
 		tiempoInicial = 0;
 		tiempoFinal = 0;
+		Juego.nombre = nombre;
 		hilo = new Thread(this);
 		teclado = new Teclado();
 	}
@@ -44,14 +46,36 @@ public class Juego implements Runnable {
 
 		}
 		tiempoFinal = System.nanoTime();
-		String texto = "Gracias por jugar!!" + "\nTiempo de maraton: "
-				+ (tiempoFinal - tiempoInicial) / 1000000000 + "seg"
-				+ "\nRespuestas correctas: " + (turnos - preguntasIncorrectas)
-				+ "\nRespuestas Incorrectas: " + preguntasIncorrectas;
+		int nivelDeIgnorancia = (preguntasIncorrectas * 100)
+				/ ventanaJuego.getTurnos();
+
+		String[] colores = { "#008000", "#FFD700", "#FF0000" };
+		String[] puntajes = { "EXCELENTE", "REGULAR", "MALO" };
+		int tiempo = (int) ((tiempoFinal - tiempoInicial) / 1000000000);
+		int respuestasCorrectas = (turnos - preguntasIncorrectas);
+		int i = 0;
+
+		if (preguntasIncorrectas <= 1) {
+			i = 0;
+		} else if (preguntasIncorrectas >= 3 && preguntasIncorrectas <= 5) {
+			i = 1;
+		} else {
+			i = 2;
+		}
+
+		String calisString = "<html>" + "<p>" + nombre
+				+ " gracias por jugar</p>" + "<br>" + "<p>Tiempo:" + tiempo
+				+ "</p>" + "<br>" + "<p>Respuestas correctas:"
+				+ respuestasCorrectas + "</p>" + "<br>"
+				+ "<p>Respuestas incorrectas:" + preguntasIncorrectas + "</p>"
+				+ "<br>" + "<p>Porcentaje de ignorancia: " + nivelDeIgnorancia
+				+ "%</p>" + "<br>" + "<p>Eres:" + "<span>" + "<font"
+				+ " color=" + colores[i] + ">" + puntajes[i]
+				+ "</font></span></p>" + "</html>";
 
 		String[] opciones = { "Inicio", "Salir" };
 
-		int op = JOptionPane.showOptionDialog(null, texto, "Poup",
+		int op = JOptionPane.showOptionDialog(null, calisString, "Poup",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
 				opciones, opciones[0]);
 
@@ -84,6 +108,7 @@ public class Juego implements Runnable {
 				if (!ventanaJuego.getdialogo().verificar_respuesta()) {
 					preguntasIncorrectas++;
 					int aumentar = ventanaJuego.getPersonaje().getDistancia();
+
 					ventanaJuego.getBarraDeIgnorancia().aumentarIgnorancia(
 							aumentar * preguntasIncorrectas);
 				}
@@ -109,10 +134,6 @@ public class Juego implements Runnable {
 	private void llamarPortada() {
 		ventana = new Ventana();
 		ventana.setVisible(true);
-	}
-
-	private void reintentar() {
-		ventanaJuego = new VentanaJuego(this.teclado);
 	}
 
 	private void redireccionar(int op) {
