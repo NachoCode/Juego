@@ -13,7 +13,7 @@ public class Juego implements Runnable {
 	private Teclado teclado;
 	private static int turnos, preguntasIncorrectas;
 	private long tiempoInicial, tiempoFinal;
-	private final static int velocidadDeJuego = 10;
+	private final static int velocidadDeJuego = 50;
 	private Ventana ventana;
 
 	public Juego() {
@@ -45,10 +45,11 @@ public class Juego implements Runnable {
 		}
 		tiempoFinal = System.nanoTime();
 		String texto = "Gracias por jugar!!" + "\nTiempo de maraton: "
-				+ (tiempoFinal - tiempoInicial) / 1000000000
-				+ "\nRespuestas correctas: XX" + "\nRespuestas Incorrectas: XX";
+				+ (tiempoFinal - tiempoInicial) / 1000000000 + "seg"
+				+ "\nRespuestas correctas: " + (turnos - preguntasIncorrectas)
+				+ "\nRespuestas Incorrectas: " + preguntasIncorrectas;
 
-		String[] opciones = { "Inicio", "Reintentar", "Salir" };
+		String[] opciones = { "Inicio", "Salir" };
 
 		int op = JOptionPane.showOptionDialog(null, texto, "Poup",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
@@ -73,8 +74,7 @@ public class Juego implements Runnable {
 		}
 	}
 
-	private synchronized void actulizar() throws InterruptedException {
-
+	private synchronized void actulizar() {
 		if (teclado.getDerecha()) {
 			ventanaJuego.getMapa().mover();
 			ventanaJuego.getPersonaje().animar();
@@ -113,7 +113,6 @@ public class Juego implements Runnable {
 
 	private void reintentar() {
 		ventanaJuego = new VentanaJuego(this.teclado);
-		ventanaJuego.setVisible(true);
 	}
 
 	private void redireccionar(int op) {
@@ -125,13 +124,7 @@ public class Juego implements Runnable {
 			this.salir();
 			break;
 		case 1: {
-			System.out.println("REINTENTAR");
-			ventanaJuego.dispose();
-			reintentar();
-			break;
-		}
-		case 2: {
-			System.out.println("SALIR");
+			System.out.println("Salir");
 			ventanaJuego.dispose();
 			break;
 		}

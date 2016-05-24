@@ -11,6 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import preguntas.Preguntas;
+import principal.Juego;
 
 public class VentanaJuego extends JFrame {
 	/**
@@ -88,9 +89,9 @@ public class VentanaJuego extends JFrame {
 		// Preguntas
 		preguntas = new Preguntas();
 		listaNumeros = preguntas.hacerNumerosAleatorios();
-		// preguntas.crearFichero();
+		preguntas.crearFichero();
 		preguntas.obtenerPreguntas();
-		// preguntas.escribirFichero();
+		preguntas.escribirFichero();
 		dialogPreguntas = new DialogPreguntas(teclado);
 
 	}
@@ -203,5 +204,10 @@ public class VentanaJuego extends JFrame {
 
 			}
 		}
+	}
+
+	public void reintentar() {
+		Juego juego = new Juego();
+		juego.empezar();
 	}
 }
