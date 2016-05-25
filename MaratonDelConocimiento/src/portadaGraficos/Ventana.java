@@ -1,13 +1,14 @@
 package portadaGraficos;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -25,7 +26,7 @@ public class Ventana extends JFrame {
 	// Variables
 	private Container c;
 	private JPanel[] panel;
-	private JButton[] button;
+	private BotonesMenu[] button;
 	private static final int ANCHO = 800, ALTO = 600;
 	// Menu
 	private JMenuBar menuBar;
@@ -88,22 +89,20 @@ public class Ventana extends JFrame {
 		panel[3].setBackground(Color.BLUE);
 
 		// Panel 4
-		panel[4] = new JPanel();
+		panel[4] = new JPanel(new GridLayout(5, 1));
 		panel[4].setBackground(Color.DARK_GRAY);
 
 		panel[5] = new JPanel();
 		panel[5].setBackground(Color.LIGHT_GRAY);
 
-		panel[6] = new JPanel();
-		panel[6].setBackground(Color.ORANGE);
+		panel[6] = new JPanel(new BorderLayout());
+		panel[6].setBackground(Color.BLACK);
 
 		// Botones
-		button = new JButton[5];
-		button[0] = new JButton("Jugar");
-		button[1] = new JButton("Instrucciones");
-		button[2] = new JButton("Puntuaciones");
-		button[3] = new JButton("Acerca de");
-		button[4] = new JButton("Salir");
+		button = new BotonesMenu[4];
+		for (int i = 0; i < button.length; i++) {
+			button[i] = new BotonesMenu(i);
+		}
 
 	}
 
@@ -140,24 +139,31 @@ public class Ventana extends JFrame {
 
 		// Acciones en la ventana
 		button[1].addActionListener(new AccionesDeClick(button[1].getText(),
-				card, panel[0]));
+				card, panel[0], panel[4]));
 
 		button[2].addActionListener(new AccionesDeClick(button[2].getText(),
-				card, panel[0]));
+				card, panel[0], panel[6]));
 
 		button[3].addActionListener(new AccionesDeClick(button[3].getText(),
-				card, panel[0]));
+				card, panel[0], null));
 
-		button[4].addActionListener(new AccionesDeClick(button[4].getText(),
-				card, panel[0]));
+		// Acciones de mouse
+		button[0].addMouseListener(new EfectoMouse(button[0]));
+		button[1].addMouseListener(new EfectoMouse(button[1]));
+		button[2].addMouseListener(new EfectoMouse(button[2]));
+		button[3].addMouseListener(new EfectoMouse(button[3]));
 
 		// Eventos del menu
 		items[0].addActionListener(new AccionesDeClick("Portada", card,
-				panel[0]));
+				panel[0], null));
 
 		items[1].addActionListener(new AccionesDeClick(button[3].getText(),
-				card, panel[0]));
+				card, panel[0], null));
 
+	}
+
+	private void crearInstrucciones() {
+		panel[4].add(new Label("HOLAAA"));
 	}
 
 	public boolean cerrado() {

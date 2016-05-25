@@ -57,7 +57,7 @@ public class Juego implements Runnable {
 
 		if (preguntasIncorrectas <= 1) {
 			i = 0;
-		} else if (preguntasIncorrectas >= 3 && preguntasIncorrectas <= 5) {
+		} else if (preguntasIncorrectas >= 2 && preguntasIncorrectas <= 5) {
 			i = 1;
 		} else {
 			i = 2;
