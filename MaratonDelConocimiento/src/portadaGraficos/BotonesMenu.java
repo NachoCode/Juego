@@ -8,11 +8,11 @@ import javax.swing.JButton;
 public class BotonesMenu extends JButton {
 	private String[] nombre = { "Jugar", "Instrucciones", "Acerca de", "Salir" };
 
-	public BotonesMenu(int index) {
-		this.setBackground(Color.BLACK);
-		this.setBorder(null);
+	public BotonesMenu(int index, Color defecto) {
+		this.setBackground(defecto);
 		this.setText(nombre[index]);
-		this.setForeground(Color.white);
+		this.setForeground(Color.WHITE);
+		this.setBorderPainted(false);
 		this.setFont(new Font("Mono", Font.PLAIN, 20));
 	}
 

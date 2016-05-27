@@ -5,7 +5,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,7 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import principal.Juego;
@@ -48,6 +46,7 @@ public class Ventana extends JFrame {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setJMenuBar(menuBar);
+		this.setUndecorated(true);
 
 	}
 
@@ -77,7 +76,7 @@ public class Ventana extends JFrame {
 		// Panel 1
 		panel[1] = new JPanel(null);
 		panel[1].setBounds(0, 0, ANCHO, ALTO);
-		panel[1].setBackground(Color.black);
+		panel[1].setBackground(Color.BLACK);
 
 		// Panel 2
 		panel[2] = new JPanel(new GridLayout(5, 1, 0, 10));
@@ -101,7 +100,7 @@ public class Ventana extends JFrame {
 		// Botones
 		button = new BotonesMenu[4];
 		for (int i = 0; i < button.length; i++) {
-			button[i] = new BotonesMenu(i);
+			button[i] = new BotonesMenu(i, Color.BLACK);
 		}
 
 	}
@@ -129,10 +128,10 @@ public class Ventana extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				String nombre = JOptionPane
-						.showInputDialog("Ingrese un nombre: ");
-				juego = new Juego(nombre);
+				juego = new Juego();
+
 				juego.crearVentanaJuego();
+
 				juego.empezar();
 			}
 		});
@@ -160,10 +159,6 @@ public class Ventana extends JFrame {
 		items[1].addActionListener(new AccionesDeClick(button[3].getText(),
 				card, panel[0], null));
 
-	}
-
-	private void crearInstrucciones() {
-		panel[4].add(new Label("HOLAAA"));
 	}
 
 	public boolean cerrado() {

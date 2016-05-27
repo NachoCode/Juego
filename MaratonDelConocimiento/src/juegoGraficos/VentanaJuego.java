@@ -26,7 +26,7 @@ public class VentanaJuego extends JFrame {
 	// Enemigos
 	private Enemigos[] enemigos;
 	// CAMBIAR ESTA VARIABLE
-	private final static int CANT_ENEMIGOS = 6;
+	private final static int CANT_ENEMIGOS = 2;
 
 	// Menu
 	private JMenuBar menuBar;
@@ -175,6 +175,7 @@ public class VentanaJuego extends JFrame {
 			dialogPreguntas.setVisible(true);
 			return true;
 		} else {
+
 			return false;
 		}
 
@@ -185,6 +186,7 @@ public class VentanaJuego extends JFrame {
 		int numeroAleatorio = listaNumeros.get(random);
 		listaNumeros.remove(random);
 		CANT_PREGUNTAS--;
+
 		for (int i = 0; i < listaNumeros.size(); i++) {
 			System.out.println("index " + i + ": " + listaNumeros.get(i));
 		}
@@ -212,6 +214,9 @@ public class VentanaJuego extends JFrame {
 
 			}
 		}
+	}
+
+	private void accionesDeComponentes() {
 	}
 
 }

@@ -13,30 +13,32 @@ public class Juego implements Runnable {
 	private Teclado teclado;
 	private static int turnos, preguntasIncorrectas;
 	private long tiempoInicial, tiempoFinal;
-	private final static int velocidadDeJuego = 50;
+	private final static int velocidadDeJuego = 40;
 	private Ventana ventana;
 	private static String nombre;
 
-	public Juego(String nombre) {
+	public Juego() {
+		//
 		turnos = 0;
 		preguntasIncorrectas = 0;
 		tiempoInicial = 0;
 		tiempoFinal = 0;
-		Juego.nombre = nombre;
+
 		hilo = new Thread(this);
+
 		teclado = new Teclado();
 	}
 
 	@Override
 	public void run() {
+
 		while (turnos < ventanaJuego.getTurnos()) {
+
 			try {
 				synchronized (this) {
 					actulizar();
 					animacionesDeObjetos();
-
 				}
-				// System.out.println("FUNCIONANDO");
 
 				Thread.sleep(velocidadDeJuego);
 			} catch (InterruptedException e) {
@@ -65,7 +67,7 @@ public class Juego implements Runnable {
 
 		String calisString = "<html>" + "<p>" + nombre
 				+ " gracias por jugar</p>" + "<br>" + "<p>Tiempo:" + tiempo
-				+ "</p>" + "<br>" + "<p>Respuestas correctas:"
+				+ "seg" + "</p>" + "<br>" + "<p>Respuestas correctas:"
 				+ respuestasCorrectas + "</p>" + "<br>"
 				+ "<p>Respuestas incorrectas:" + preguntasIncorrectas + "</p>"
 				+ "<br>" + "<p>Porcentaje de ignorancia: " + nivelDeIgnorancia
@@ -99,6 +101,7 @@ public class Juego implements Runnable {
 	}
 
 	private synchronized void actulizar() {
+
 		if (teclado.getDerecha()) {
 			ventanaJuego.getMapa().mover();
 			ventanaJuego.getPersonaje().animar();
@@ -107,10 +110,13 @@ public class Juego implements Runnable {
 				turnos++;
 				if (!ventanaJuego.getdialogo().verificar_respuesta()) {
 					preguntasIncorrectas++;
+					ventanaJuego.setFocusable(true);
 					int aumentar = ventanaJuego.getPersonaje().getDistancia();
-
 					ventanaJuego.getBarraDeIgnorancia().aumentarIgnorancia(
 							aumentar * preguntasIncorrectas);
+				} else {
+					ventanaJuego.setFocusable(true);
+					System.out.println("CORRECTA");
 				}
 			}
 
@@ -128,6 +134,7 @@ public class Juego implements Runnable {
 	public void crearVentanaJuego() {
 		ventanaJuego = new VentanaJuego(this.teclado);
 		ventanaJuego.setVisible(true);
+		Juego.nombre = JOptionPane.showInputDialog("Ingrese su nombre: ");
 
 	}
 

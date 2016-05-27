@@ -79,10 +79,10 @@ public class AccionesDeClick implements ActionListener {
 		panel.setBackground(Color.BLACK);
 		panel.setForeground(Color.WHITE);
 		panel.setFont(new Font("Mono", Font.BOLD, 20));
-		panel.add(new Label("-Jesus Alfredo Rios " + "EL KOMANDER"));
+		panel.add(new Label("-Jesus Alfredo Ramírez Martínez"));
 		panel.add(new Label("-Jesus Ignacio Castillo Barrios"));
-		panel.add(new Label("-Intituto Tecnologico de Ciudad Valles"));
-		panel.add(new Label("-Semestre: 2"));
+		panel.add(new Label("-Instituto Tecnologico de Ciudad Valles"));
+		panel.add(new Label("-Semestre: 2°"));
 		panel.add(new Label("-Grupo: A"));
 		panel.add(new Label("Carrera: Ing.Sistemas"));
 		panel.add(new Label("Materia: POO"));
